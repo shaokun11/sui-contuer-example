@@ -16,25 +16,27 @@ import App from "./App.tsx";
 const queryClient = new QueryClient();
 
 const { networkConfig } = createNetworkConfig({
-  localnet: { url: getFullnodeUrl("localnet") },
+  localnet: { url: "http://127.0.0.1:3041/v1" },
   devnet: { url: getFullnodeUrl("devnet") },
   testnet: { url: getFullnodeUrl("testnet") },
   mainnet: { url: getFullnodeUrl("mainnet") },
 });
 
 const X = () => {
-  const [activeNetwork, setActiveNetwork] = useState("testnet" as any);
- return <SuiClientProvider
-    networks={networkConfig}
-    network={activeNetwork}
-    onNetworkChange={(network) => {
-      setActiveNetwork(network);
-    }}
-  >
-    <WalletProvider autoConnect>
-      <App />
-    </WalletProvider>
-  </SuiClientProvider>;
+  const [activeNetwork, setActiveNetwork] = useState("localnet" as any);
+  return (
+    <SuiClientProvider
+      networks={networkConfig}
+      network={activeNetwork}
+      onNetworkChange={(network) => {
+        // setActiveNetwork(network);
+      }}
+    >
+      <WalletProvider autoConnect>
+        <App />
+      </WalletProvider>
+    </SuiClientProvider>
+  );
 };
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
