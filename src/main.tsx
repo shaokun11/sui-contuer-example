@@ -16,34 +16,28 @@ import App from "./App.tsx";
 const queryClient = new QueryClient();
 
 const { networkConfig } = createNetworkConfig({
-  localnet: { url: "http://127.0.0.1:3041/v1" },
+  movement: { url: "https://sui.internal.devnet.movementlabs.xyz" },
+  localnet: { url: "http://127.0.0.1:3000" },
   devnet: { url: getFullnodeUrl("devnet") },
   testnet: { url: getFullnodeUrl("testnet") },
   mainnet: { url: getFullnodeUrl("mainnet") },
 });
 
-const X = () => {
-  const [activeNetwork, setActiveNetwork] = useState("localnet" as any);
-  return (
-    <SuiClientProvider
-      networks={networkConfig}
-      network={activeNetwork}
-      onNetworkChange={(network) => {
-        // setActiveNetwork(network);
-      }}
-    >
-      <WalletProvider autoConnect>
-        <App />
-      </WalletProvider>
-    </SuiClientProvider>
-  );
-};
-
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <Theme appearance="dark">
       <QueryClientProvider client={queryClient}>
-        <X />
+        <SuiClientProvider
+          networks={networkConfig}
+          onNetworkChange={() => {
+            // setActiveNetwork(network);
+          }}
+          network="localnet"
+        >
+          <WalletProvider autoConnect>
+            <App />
+          </WalletProvider>
+        </SuiClientProvider>
       </QueryClientProvider>
     </Theme>
   </React.StrictMode>,
